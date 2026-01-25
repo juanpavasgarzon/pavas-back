@@ -1,0 +1,18 @@
+services:
+  api:
+    container_name: pavas-api
+    build:
+      context: .
+      target: ${TARGET:-development}
+    restart: unless-stopped
+    init: true
+    env_file:
+      - .env
+    ports:
+      - '${PORT:-3000}:3000'
+    networks:
+      - pavas-network
+
+networks:
+  pavas-network:
+    driver: bridge
