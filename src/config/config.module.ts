@@ -14,7 +14,7 @@ import { jwtConfig } from './jwt.config';
       load: [appConfig, databaseConfig, jwtConfig],
       validationSchema: envValidationSchema,
       validationOptions: {
-        abortEarly: true,
+        abortEarly: false,
       },
     }),
   ],
