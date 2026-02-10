@@ -13,4 +13,14 @@ export enum Permission {
   PRODUCTS_CREATE = 'catalog.products.create',
   PRODUCTS_UPDATE = 'catalog.products.update',
   PRODUCTS_DELETE = 'catalog.products.delete',
+
+  // Quotations
+  QUOTATIONS_READ = 'quotations.quotations.read',
+  QUOTATIONS_CREATE = 'quotations.quotations.create',
+
+  // Clients
+  CLIENTS_READ = 'clients.clients.read',
+  CLIENTS_CREATE = 'clients.clients.create',
+  CLIENTS_UPDATE = 'clients.clients.update',
+  CLIENTS_DELETE = 'clients.clients.delete',
 }

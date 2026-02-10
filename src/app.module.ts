@@ -7,6 +7,8 @@ import { ConfigModule } from './config';
 import { DatabaseModule } from './database';
 import { AuthModule } from './modules/auth/auth.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
+import { ClientsModule } from './modules/clients/clients.module';
+import { QuotationsModule } from './modules/quotations/quotations.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -25,6 +27,8 @@ import { UsersModule } from './modules/users/users.module';
     AuthModule,
     UsersModule,
     CatalogModule,
+    ClientsModule,
+    QuotationsModule,
   ],
   providers: [
     {
