@@ -6,14 +6,17 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import { CurrentUser, Public } from 'src/common';
 import { User } from 'src/modules/users';
-import { RequirePermissions } from '../decorators/require-permissions.decorator';
+import {
+  CurrentUser,
+  Permission,
+  Public,
+  RequirePermissions,
+} from 'src/modules/auth';
 import { LoginRequest } from '../dto/request/login.request';
 import { RegisterRequest } from '../dto/request/register.request';
 import { AuthResponse } from '../dto/response/auth.response';
 import { ProfileResponse } from '../dto/response/profile.response';
-import { Permission } from '../enums/permission.enum';
 import { LoginUseCase } from '../use-cases/login.use-case';
 import { RegisterUseCase } from '../use-cases/register.use-case';
 

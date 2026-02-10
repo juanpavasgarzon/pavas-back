@@ -1,6 +1,3 @@
-// Decorators
-export * from './decorators';
-
 // DTOs
 export * from './dto';
 
