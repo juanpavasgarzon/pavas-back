@@ -32,6 +32,17 @@ export class ClientsRepository {
     return this.repository.findOne({ where: { code } });
   }
 
+  async findFirstByName(name: string): Promise<IClient | null> {
+    const trimmed = name?.trim();
+    if (!trimmed) {
+      return null;
+    }
+    return this.repository
+      .createQueryBuilder('client')
+      .where('LOWER(TRIM(client.name)) = LOWER(:name)', { name: trimmed })
+      .getOne();
+  }
+
   async update(id: string, data: UpdateClientData): Promise<IClient> {
     await this.repository.update(id, data);
     const client = await this.findById(id);

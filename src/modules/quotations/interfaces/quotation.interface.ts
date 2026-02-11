@@ -1,9 +1,11 @@
+import type { ItemType } from 'src/common/enums/item-type.enum';
 import type { QuotationStatus } from '../enums/quotation-status.enum';
 
 export interface IQuotationItem {
   id: string;
   quotationId: string;
-  productId: string | null;
+  itemType: ItemType | null;
+  itemId: string | null;
   description: string;
   quantity: number;
   unitPrice: number;
@@ -32,7 +34,8 @@ export interface CreateQuotationData {
 }
 
 export interface CreateQuotationItemData {
-  productId?: string | null;
+  itemType?: ItemType | null;
+  itemId?: string | null;
   description: string;
   quantity: number;
   unitPrice: number;

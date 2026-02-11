@@ -4,10 +4,6 @@ import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 import { FindUserByEmailUseCase } from '../use-cases/find-user-by-email.use-case';
 import { FindUserByIdUseCase } from '../use-cases/find-user-by-id.use-case';
 
-/**
- * Service exposed to other modules.
- * Only contains methods needed externally.
- */
 @Injectable()
 export class UsersService {
   constructor(

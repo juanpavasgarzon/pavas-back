@@ -8,6 +8,7 @@ import { CreateClientUseCase } from './use-cases/create-client.use-case';
 import { DeleteClientUseCase } from './use-cases/delete-client.use-case';
 import { FindAllClientsUseCase } from './use-cases/find-all-clients.use-case';
 import { FindClientByIdUseCase } from './use-cases/find-client-by-id.use-case';
+import { FindClientFirstByNameUseCase } from './use-cases/find-client-first-by-name.use-case';
 import { UpdateClientUseCase } from './use-cases/update-client.use-case';
 
 @Module({
@@ -18,6 +19,7 @@ import { UpdateClientUseCase } from './use-cases/update-client.use-case';
     CreateClientUseCase,
     FindAllClientsUseCase,
     FindClientByIdUseCase,
+    FindClientFirstByNameUseCase,
     UpdateClientUseCase,
     DeleteClientUseCase,
     ClientsService,

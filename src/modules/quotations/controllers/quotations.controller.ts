@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import type { IUser } from 'src/modules/users/interfaces/user.interface';
 import { CreateQuotationRequest } from '../dto/request/create-quotation.request';
 import { QuotationsQueryRequest } from '../dto/request/quotations-query.request';
 import { QuotationResponse } from '../dto/response/quotation.response';
+import { ApproveQuotationUseCase } from '../use-cases/approve-quotation.use-case';
 import { CreateQuotationUseCase } from '../use-cases/create-quotation.use-case';
 import { FindAllQuotationsUseCase } from '../use-cases/find-all-quotations.use-case';
 import { FindQuotationByIdUseCase } from '../use-cases/find-quotation-by-id.use-case';
@@ -25,6 +27,7 @@ export class QuotationsController {
     private readonly createQuotationUseCase: CreateQuotationUseCase,
     private readonly findAllQuotationsUseCase: FindAllQuotationsUseCase,
     private readonly findQuotationByIdUseCase: FindQuotationByIdUseCase,
+    private readonly approveQuotationUseCase: ApproveQuotationUseCase,
   ) {}
 
   @Post()
@@ -61,6 +64,17 @@ export class QuotationsController {
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<QuotationResponse> {
     const quotation = await this.findQuotationByIdUseCase.execute(id);
+    return new QuotationResponse(quotation);
+  }
+
+  @Patch(':id/approve')
+  @RequirePermissions(Permission.QUOTATIONS_UPDATE)
+  @HttpCode(HttpStatus.OK)
+  async approve(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: IUser,
+  ): Promise<QuotationResponse> {
+    const quotation = await this.approveQuotationUseCase.execute(id, user.id);
     return new QuotationResponse(quotation);
   }
 }

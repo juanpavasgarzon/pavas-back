@@ -18,16 +18,16 @@ export class Client implements IClient {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   email: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   phone: string | null;
 
   @Column({ type: 'text', nullable: true })
   address: string | null;
 
-  @Column({ name: 'tax_id', nullable: true })
+  @Column({ name: 'tax_id', type: 'varchar', nullable: true })
   taxId: string | null;
 
   @Column({ name: 'is_active', default: true })

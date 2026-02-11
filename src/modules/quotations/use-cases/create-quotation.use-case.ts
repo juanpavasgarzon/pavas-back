@@ -20,7 +20,8 @@ export class CreateQuotationUseCase {
     }
 
     const items: CreateQuotationItemData[] = request.items.map((item) => ({
-      productId: item.productId ?? null,
+      itemType: item.itemType ?? null,
+      itemId: item.itemId ?? null,
       description: item.description,
       quantity: item.quantity,
       unitPrice: item.unitPrice,

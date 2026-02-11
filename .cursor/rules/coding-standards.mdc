@@ -1,0 +1,66 @@
+---
+description: Estándares de código TypeScript/Node y buenas prácticas
+globs: src/**/*.ts
+alwaysApply: true
+---
+
+# Estándares de codificación (Node/TypeScript)
+
+## Comentarios
+
+- **Cero comentarios** en el código: no usar `//` ni `/** ... */`. El código debe ser autodescriptivo (nombres claros, funciones pequeñas). Si hace falta explicar algo, mejorar nombres o extraer lógica en lugar de comentar.
+
+## Condicionales: ifs invertidos y bloques completos
+
+- **Invertir condiciones** para salir pronto y evitar `else` innecesario.
+- **Siempre usar bloque con llaves** en `if`; no resumir en una línea.
+
+```typescript
+// ❌ BAD: else y return en una línea
+if (sale.status === SaleStatus.DRAFT) {
+  await this.process(sale);
+} else {
+  return;
+}
+if (condition) return;
+
+// ✅ GOOD: condición invertida, early return con llaves
+if (sale.status !== SaleStatus.DRAFT) {
+  return;
+}
+await this.process(sale);
+
+if (condition) {
+  return;
+}
+```
+
+## Nombres y legibilidad
+
+- Nombres descriptivos: evitar abreviaturas salvo muy conocidas (`id`, `qty` en contexto claro).
+- Funciones y métodos: verbo + sustantivo (`findById`, `createQuotation`).
+- Booleanos: prefijos `is`, `has`, `can` cuando aplique.
+
+## Async/await y errores
+
+- Usar siempre `async/await`; evitar callbacks y `.then()` en código nuevo.
+- En capa de aplicación, lanzar excepciones HTTP de NestJS (`NotFoundException`, `BadRequestException`, etc.) en lugar de `throw new Error()` genérico.
+- En `catch`, registrar el error y re-lanzar o transformar; no dejar `catch (e) {}` vacío.
+
+## Tipado
+
+- Preferir `interface` para objetos y contratos; `type` para uniones o alias.
+- Evitar `any`; usar `unknown` y narrowing si el tipo no se conoce.
+- Tipar parámetros y retornos de funciones y métodos públicos.
+
+## Dependencias e inyección
+
+- Inyectar dependencias por constructor; no instanciar servicios o repositorios con `new` dentro de use-cases o controladores.
+- Configuración asíncrona (por ejemplo Throttler): extraer a una clase o factory en `config/` y usar `useFactory` + `inject` con llamada simple en el módulo.
+
+## General Node/TS
+
+- Un `return` por ruta lógica cuando sea posible (early returns).
+- Evitar anidación profunda: extraer a funciones privadas o use-cases.
+- Constantes mágicas (números, strings repetidos) en `constants/` o enums.
+- Imports: ordenar por módulos externos, luego `src/` (config, common, modules).

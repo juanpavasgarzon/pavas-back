@@ -8,18 +8,16 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
     const forwardedFor = req.headers['x-forwarded-for'];
     const realIp = req.headers['x-real-ip'];
 
-    let ip: string;
-
     if (typeof forwardedFor === 'string') {
-      ip = forwardedFor.split(',')[0].trim();
-    } else if (Array.isArray(forwardedFor)) {
-      ip = forwardedFor[0].split(',')[0].trim();
-    } else if (typeof realIp === 'string') {
-      ip = realIp;
-    } else {
-      ip = req.ip || req.socket.remoteAddress || 'unknown';
+      return Promise.resolve(forwardedFor.split(',')[0].trim());
     }
-
+    if (Array.isArray(forwardedFor)) {
+      return Promise.resolve(forwardedFor[0].split(',')[0].trim());
+    }
+    if (typeof realIp === 'string') {
+      return Promise.resolve(realIp);
+    }
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
     return Promise.resolve(ip);
   }
 

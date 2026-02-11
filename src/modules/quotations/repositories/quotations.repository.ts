@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Quotation } from '../entities/quotation.entity';
+import { QuotationStatus } from '../enums/quotation-status.enum';
 import type {
   CreateQuotationData,
   CreateQuotationItemData,
@@ -44,7 +45,8 @@ export class QuotationsRepository {
     const itemEntities = items.map((item) =>
       this.itemsRepository.create({
         quotationId: saved.id,
-        productId: item.productId ?? null,
+        itemType: item.itemType ?? null,
+        itemId: item.itemId ?? null,
         description: item.description,
         quantity: item.quantity,
         unitPrice: item.unitPrice,
@@ -55,6 +57,11 @@ export class QuotationsRepository {
     const subtotal = itemEntities.reduce((sum, e) => sum + Number(e.total), 0);
     await this.repository.update(saved.id, { subtotal });
     return this.findById(saved.id, true) as Promise<IQuotation>;
+  }
+
+  async updateStatus(id: string, status: QuotationStatus): Promise<IQuotation> {
+    await this.repository.update(id, { status });
+    return this.findById(id, true) as Promise<IQuotation>;
   }
 
   async getNextNumber(): Promise<string> {

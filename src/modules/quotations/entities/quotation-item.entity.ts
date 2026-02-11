@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Product } from 'src/modules/catalog/entities/product.entity';
+import { ItemType } from 'src/common/enums/item-type.enum';
 import { Quotation } from './quotation.entity';
 import type { IQuotationItem } from '../interfaces/quotation.interface';
 
@@ -22,12 +22,11 @@ export class QuotationItem implements IQuotationItem {
   @JoinColumn({ name: 'quotation_id' })
   quotation: Quotation;
 
-  @Column({ name: 'product_id', nullable: true })
-  productId: string | null;
+  @Column({ name: 'item_type', type: 'enum', enum: ItemType, nullable: true })
+  itemType: ItemType | null;
 
-  @ManyToOne(() => Product, { nullable: true })
-  @JoinColumn({ name: 'product_id' })
-  product: Product | null;
+  @Column({ name: 'item_id', type: 'uuid', nullable: true })
+  itemId: string | null;
 
   @Column({ type: 'text' })
   description: string;

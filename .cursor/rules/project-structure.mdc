@@ -1,0 +1,43 @@
+---
+description: Estructura y convenciones del backend NestJS (módulos, use-cases, capas)
+globs: src/**/*.ts
+alwaysApply: false
+---
+
+# Estructura del proyecto (pavas-back)
+
+## Arquitectura por módulos
+
+Cada dominio vive en `src/modules/<nombre>/` con esta estructura:
+
+- **controllers/** – endpoints HTTP; delegan al servicio del módulo o a use-cases internos.
+- **services/** – fachada del módulo: expone métodos que otros módulos usan; internamente usa use-cases.
+- **use-cases/** – lógica de negocio (un archivo por acción); usan repositorios; no se exportan.
+- **repositories/** – acceso a datos (TypeORM). Un repositorio por agregado principal; no se exportan.
+- **entities/** – entidades TypeORM.
+- **dto/request/** y **dto/response/** – DTOs de entrada y salida.
+- **interfaces/** – contratos TypeScript (IEntity, CreateData, UpdateData).
+- **enums/** – enums del dominio (status, type, etc.).
+
+No poner lógica de negocio en controladores ni en repositorios; los repositorios solo persisten y consultan.
+
+## Nomenclatura
+
+- Entidades: singular PascalCase (`Quotation`, `SaleItem`).
+- Use-cases: `<Acción><Entidad>.use-case.ts` (ej. `CreateQuotationUseCase`, `FindSaleByIdUseCase`).
+- DTOs request: kebab-case con sufijo `.request.ts` (ej. `create-quotation.request.ts`).
+- DTOs response: kebab-case con sufijo `.response.ts`.
+- Rutas: plural y kebab-case (`/quotations`, `/purchase-orders`).
+
+## Ítems y catálogo
+
+Las líneas de ítem (cotización, venta, orden de compra, compra) usan **item_type** + **item_id** (no columnas separadas product_id/service_id). Tipo compartido: `ItemType` en `src/common/enums/item-type.enum.ts` (product | service).
+
+## Integración entre módulos
+
+- **Los módulos solo exportan servicios.** Otros módulos no importan repositorios ni use-cases.
+- Los **servicios** exponen los métodos que otros módulos necesitan; internamente usan use-cases.
+- Los **use-cases** usan repositorios; no se inyectan desde fuera del módulo.
+- En cada módulo, el **index.ts** exporta únicamente: el **módulo**, los **servicios** y los **contratos** (interfaces y enums que otros módulos necesiten). No exportar repositorios ni use-cases.
+- Evitar imports circulares: si A usa B, B no debe importar A.
+- Configuración compartida (paginación, guards, etc.) en `src/common/`.
